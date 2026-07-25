@@ -1,0 +1,29 @@
+---
+title: "Running Commands"
+description: "BOR runs real shell commands on your machine — installs, builds, tests, dev servers, any CLI — with live terminal output streaming into the conversation."
+---
+
+Bed of Roses runs real shell commands on your Mac. That's how it installs dependencies, runs builds and tests, starts dev servers, converts files in bulk, and drives any command-line tool you have.
+
+## What you see
+
+Every command streams into a **terminal card** in the thought bubble: the `$` prompt with the command, live stdout and stderr, the working directory, and the exit status. You watch it run, exactly as if you'd typed it.
+
+## How it behaves
+
+- **A real shell.** Pipes, redirects, globs, `&&`, `cd`, environment variables — everything works.
+- **Never hangs the conversation.** A command gets up to 60 seconds in the foreground; if it's still going, it keeps running in the background and BOR checks back on it, showing you a countdown card while it waits.
+- **Dev servers stay up.** Long-runners like `npm run dev` are started in the background — BOR grabs the startup output (including the `localhost` URL), leaves the server running, and can open it in the browser to verify.
+- **Long output is paged.** Output is captured and BOR pages through it rather than dumping walls of text at you.
+
+## Safety
+
+Commands pass a validator before running: catastrophic patterns (`rm -rf /`, fork bombs, piping the network to a shell, writing to raw disks) and commands that would kill BOR itself are refused outright. Everything that runs is recorded in the audit log.
+
+## What to say
+
+- "Install and run my project."
+- "Run the tests and fix whatever fails."
+- "Convert every PNG in this folder to WebP."
+- "What's using port 3000? Kill it."
+- "Set up a Python virtualenv and install the requirements."

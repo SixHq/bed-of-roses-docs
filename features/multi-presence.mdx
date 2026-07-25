@@ -1,0 +1,36 @@
+---
+title: "Multi-presence"
+description: "Run as many presences as you like — each a fully separate companion with its own model, memory, apps, connectors, theme, and personality."
+---
+
+One Bed of Roses is a companion. Several are a team. BOR can run many presences at once, and each is completely its own: its own model and provider, its own memory, its own apps, its own connectors, its own look and name.
+
+<img src="/assets/run_as_many_presence_as_you_like_.png" alt="Multiple presence orbs running in parallel, each an isolated companion" />
+
+## Truly separate
+
+Each presence runs as its own local runtime process on its own port, with its own data folder. Nothing is shared — not memory, not chat history, not connected accounts, not scheduled jobs, not themes. Your work presence on Claude with Slack and GitHub connected knows nothing about your home presence on Gemini with WhatsApp and YouTube.
+
+## Why you'd want more than one
+
+- **Separate contexts** — work vs. personal, with different memory, different connectors, different tone.
+- **Different models** — Claude for one, Gemini or DeepSeek for another, side by side.
+- **Different looks** — a Pixel CRT terminal orb and a Liquid Glass orb at once.
+- **Throwaway** — spin one up to experiment, delete it when done.
+
+## Managing presences
+
+The **Main Bed of Roses app** (also in `~/Applications`, launchable from Spotlight) shows all your presences — create, open, rename, delete. Or use the CLI:
+
+```bash
+bor onboard               # create a new presence with full onboarding
+bor create "Work"         # register a presence headlessly
+bor list                  # list presences (alias: bor ls)
+bor delete <presence_id>  # delete a presence and all its data
+```
+
+`bor delete` removes that presence's entire data directory — apps, memory, config, everything — and only ever touches that presence's folder. See [Command line](/cli/command-line).
+
+## Native app wrappers
+
+Apps a presence builds are mirrored as real `.app` wrappers in `~/Applications`, so a BOR-built "Meal Journal" launches from Finder or Spotlight like any Mac app. BOR tracks which wrappers it created, so cleanup never touches anything else.

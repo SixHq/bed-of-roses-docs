@@ -1,0 +1,55 @@
+---
+title: "Where Your Data Lives"
+description: "Everything BOR generates lives on your disk. This page is the map."
+---
+
+Everything Bed of Roses generates stays on your machine. Three roots, plus a global one:
+
+```
+bed-of-roses/
+├── os-data/                         ← user data
+│   ├── presences.json               the presence registry
+│   ├── presences/<id>/              one folder per presence:
+│   │   ├── config.json              provider keys, name, theme, connectors
+│   │   ├── surfaces/                generated apps & shortcut cards
+│   │   ├── memory/                  sessions + long-term memory
+│   │   ├── files/                   "BOR Home" files
+│   │   ├── logs/audit.jsonl         append-only audit log
+│   │   ├── cron/, notifications/    scheduled jobs + inbox
+│   │   └── .bor/                    this presence's working dir
+│   ├── images/                      generated/captured images
+│   └── v2-wallpaper/                the applied macOS wallpaper
+│
+├── .bor/                            ← files BOR creates for you
+│   ├── workspaces/<slug>/           real projects it scaffolds & runs
+│   ├── files/, images/, downloads/, reports/, exports/, scratch/
+│   └── mcp.json                     this presence's MCP servers
+│
+└── .bed-of-roses/                   ← local config & caches
+    ├── skills/                      project skills (Markdown)
+    ├── mcp/servers.json             hand-written MCP config
+    └── browser/                     browser profiles (ambient + Browser app)
+```
+
+Plus `~/.bed-of-roses/` (global skills, app-wrapper registry) and `~/Applications/` (the `.app` wrappers for BOR and its generated apps).
+
+## The short version
+
+- **`os-data/`** — each presence's world: its apps, memory, files, config (including API keys and connector tokens — treat as sensitive until the planned Keychain migration), scheduled jobs, and audit log.
+- **`.bor/`** — the default destination for anything BOR creates when you don't name a path. Projects get `workspaces/<name>/`; single files get `files/`. BOR always tells you where it wrote, and paths are clickable into Finder.
+- **`.bed-of-roses/`** — your [skills](/features/memory-and-skills), hand-written [MCP config](/mcp/configuring-servers), and the browser profiles.
+
+## Write protection
+
+Reads are unrestricted, but BOR refuses to write into its own source code, `node_modules`, `.git`, or anywhere outside your home folder — it can extend itself only through narrow, deliberate carve-outs (like a theme's decoration file).
+
+## The audit log
+
+`os-data/.../logs/audit.jsonl` is append-only and records every mutating action — file writes, command runs, theme changes, connector sign-ins, MCP installs. If you ever wonder what BOR did, the answer is there.
+
+## Resetting
+
+- Clear one presence's projects: remove `os-data/presences/<id>/.bor/`.
+- Give a presence amnesia: remove its `memory/` folder.
+- Delete a presence entirely: `bor delete <id>`.
+- Factory reset: remove `os-data/`, `.bor/`, `.bed-of-roses/`, `~/.bed-of-roses/`, and the BOR `.app` wrappers in `~/Applications`. Everything regenerates on next launch.

@@ -1,0 +1,41 @@
+---
+title: "OpenAI-compatible"
+description: "Connect any endpoint that speaks the OpenAI API — DeepSeek, Kimi, Z.ai, Groq, OpenRouter, Ollama, LM Studio, and more — with one-click presets."
+---
+
+The **OpenAI-compatible** provider connects BOR to any endpoint that speaks the OpenAI Chat Completions API: hosted vendors, gateways, or local model servers.
+
+## Quick presets
+
+The setup panel has one-click preset chips that fill in the base URL and a sensible model:
+
+| Preset | Base URL | Example model |
+|---|---|---|
+| **DeepSeek** | `https://api.deepseek.com` | `deepseek-v4-pro` |
+| **Kimi (Moonshot)** | `https://api.moonshot.ai/v1` | `kimi-k3` |
+| **Z.ai (GLM)** | `https://api.z.ai/api/paas/v4` | `glm-5.2` |
+| **Groq** | Groq endpoint | `llama-3.3-70b-versatile` |
+| **OpenRouter** | OpenRouter endpoint | `anthropic/claude-sonnet-5` |
+| **Together / Mistral / Perplexity / Fireworks / DeepInfra / Cerebras** | vendor endpoints | vendor models |
+| **Ollama (local)** | `http://localhost:11434/v1` | no key needed |
+| **LM Studio (local)** | `http://localhost:1234/v1` | no key needed |
+
+## Setup
+
+1. In [onboarding](/getting-started/onboarding) (or provider Settings), pick **OpenAI-compatible**.
+2. Click a preset — or enter a **base URL** by hand.
+3. Enter an **API key** if the endpoint needs one (local servers usually don't).
+4. Enter the **model name** exactly as the endpoint serves it, and pick a reasoning effort.
+
+## Notes
+
+- There's no fixed catalog — the model name is whatever your endpoint serves.
+- Vision and image support depend on the underlying model; text-only models can't use screenshot-driven features.
+- Reasoning effort maps through where the endpoint supports it (e.g. DeepSeek's reasoning models).
+
+## Troubleshooting
+
+- **Connection refused** — the server isn't running or the base URL/port is wrong.
+- **404 / unknown model** — the model name doesn't match what the endpoint serves.
+- **No streaming** — the endpoint must support OpenAI-style streamed responses.
+- See [Troubleshooting](/troubleshooting).

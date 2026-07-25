@@ -1,0 +1,61 @@
+---
+title: "Installation"
+description: "Get Bed of Roses running: macOS, Node 20+, one npm install."
+---
+
+## Requirements
+
+- **macOS**
+- **Node ≥ 20**
+- A model: an API key for Anthropic, OpenAI, Google Gemini, or any OpenAI-compatible endpoint — or **Bed of Roses credits** with no key at all. See [Providers](/providers/overview).
+
+## Install
+
+```bash
+npm install -g bed-of-roses
+bor onboard
+```
+
+`bor onboard` opens the onboarding flow — name your AI, pick a theme and presence, connect a model, link your services — and then the orb appears over your desktop. See [Onboarding](/getting-started/onboarding) for the walkthrough.
+
+Prefer not to install globally? `npx bor` does the same.
+
+### From a clone
+
+```bash
+git clone https://github.com/SixHq/bed-of-roses
+cd bed-of-roses
+npm install
+npm start
+```
+
+## Optional: bundled Chromium
+
+BOR's [ambient browser](/features/ambient-browser) uses your installed Google Chrome automatically. If you don't have Chrome, install the bundled Chromium once:
+
+```bash
+npm run browser:install
+```
+
+## Useful commands
+
+| Command | What it does |
+|---|---|
+| `bor` / `npx bor` / `npm start` | Launch Bed of Roses |
+| `bor onboard` | Create a new presence with guided onboarding |
+| `bor list` / `bor create` / `bor delete` | Manage presences — see [Command line](/cli/command-line) |
+| `npm run browser:install` | Install the bundled Chromium (only if you have no Chrome) |
+
+## Where your data lives
+
+Everything BOR generates stays on your disk:
+
+- `os-data/` — presences, config (including API keys), generated apps, memory, the audit log.
+- `.bor/` — files and projects BOR creates for you.
+- `.bed-of-roses/` — skills, MCP config, browser profiles.
+
+See [Storage & data](/concepts/storage-and-data) for the map.
+
+## Next
+
+[Onboarding](/getting-started/onboarding) — what each setup step does.

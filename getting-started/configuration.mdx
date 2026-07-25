@@ -1,0 +1,58 @@
+---
+title: "Configuration"
+description: "Models and reasoning effort, the model chip, config.json, and the environment variables that tune the runtime."
+---
+
+Most configuration happens in onboarding and by just asking BOR ("switch to Gemini", "rename yourself", "change the theme"). This page covers the knobs behind that.
+
+## Models and reasoning effort
+
+Every provider you connect has its own settings panel (in onboarding, and later via the model picker's per-provider **Settings**):
+
+- **Model** — pick from the provider's current list (or type any model id for OpenAI-compatible endpoints).
+- **Reasoning effort** — **Off, Low, Medium, High (recommended), Max**. Higher effort means the model thinks longer before acting; you see that thinking stream as reasoning cards in the bubble. Saved per provider.
+
+### The model chip
+
+The chip in the presence's input bar shows the active model. Click it to switch: the picker lists every provider you've connected, its models, and connection status. Switching is instant and applies to the next message. See [The presence](/features/presence#the-model-chip).
+
+## `config.json`
+
+Each presence keeps a `config.json` at its data root (`os-data/presences/<id>/config.json`). Onboarding and BOR itself write it; you rarely touch it by hand. It holds:
+
+- `defaultProvider` and `providers` — the active provider plus each provider's `{ apiKey, model, baseUrl, reasoning }`.
+- `aiName`, `personality`, `baseTheme`, avatar settings.
+- `connectors` — your linked services and their tokens.
+
+> **Secrets.** API keys and connector tokens live in this local file (a macOS Keychain migration is planned). They never leave your machine, but treat `os-data/` as sensitive.
+
+## Environment variables
+
+Set before launching (`PORT=8080 bor`) if you need them:
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `PORT` | `7777` | Runtime HTTP port. |
+| `BOR_DATA_DIR` | `os-data/` | Data root (the host sets this per presence). |
+| `BOR_PROVIDER_REASONING_EFFORT` | `high` | Reasoning-effort fallback when a provider has none set (`none`…`max`). |
+| `BOR_PROVIDER_MAX_OUTPUT_TOKENS` | provider default | Max output tokens per response. |
+| `BOR_BROWSER_HEADLESS=1` | off | Run the ambient browser without a visible window. |
+| `BOR_BROWSER_EXECUTABLE_PATH` | auto | Use a specific Chrome/Chromium binary. |
+| `BOR_BROWSER_CHANNEL` | auto | Browser channel (e.g. `chrome`). |
+| `BOR_MCP_MARKETPLACE_URL` | Cline catalog | Override the MCP marketplace source. |
+| `BOR_CHAT_MAX_PASSES` | unlimited | Safety ceiling on tool passes per turn. |
+| `BOR_TOOL_MAX_ATTEMPTS` | `2` | Retries for transient tool failures. |
+| `BOR_STREAM_IDLE_TIMEOUT_MS` | `60000` | Abort a stalled model stream after this idle time. |
+| `BOR_RUNTIME_URL` | — | Attach the host to an already-running runtime. |
+
+The full list is in the [Configuration reference](/reference/configuration-reference).
+
+## Files that extend BOR
+
+- **Skills** — Markdown playbooks in `.bed-of-roses/skills/` (project) and `~/.bed-of-roses/skills/` (global). See [Memory & skills](/features/memory-and-skills).
+- **MCP servers** — installed by the [marketplace](/mcp/marketplace) into the presence's `.bor/mcp.json`; hand-written entries go in `.bed-of-roses/mcp/servers.json`. Changes hot-reload. See [Configuring servers](/mcp/configuring-servers).
+
+## Next
+
+- [Storage & data](/concepts/storage-and-data) — where everything lives on disk.
+- [Providers](/providers/overview) — the per-provider details.

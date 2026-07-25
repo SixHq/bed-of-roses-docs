@@ -1,0 +1,29 @@
+---
+title: "How It Works: The Presence"
+description: "What the orb and thought bubble are under the hood — a light tour, no code required."
+---
+
+The presence — the orb, the composer, the thought bubble — is a small always-on-top window that floats over your desktop, pinned across every Space. This page is the light "how it works"; for what it can *do*, see [The presence](/features/presence) feature page.
+
+## States
+
+- **Collapsed orb** — idle, draggable, click to talk. Shows a badge when notifications are unread, and dozes off after five minutes idle.
+- **Expanded** — the composer: text input, attachment chips, the model chip, send.
+- **Thinking** — the thought bubble is open and streaming work.
+- **Minimized** — a small task chip while work continues in the background.
+
+Toggle open/closed any time with **Cmd+Option+Space**.
+
+## How work reaches the bubble
+
+When you send a message, the local runtime streams the model's reply as a series of events. The presence turns each event into a live card the moment it starts — a reasoning card as thinking streams, an editor card as a file is written, a terminal card as a command runs, an MCP card as a service is called — and finalizes it when the underlying work completes. Nothing is replayed after the fact; you're watching the actual run.
+
+Stopping a task cancels the run and marks the conversation interrupted; resuming sends the model a "task resumed" signal with the full record of what already happened, which is why it continues rather than starting over.
+
+## Conversations persist
+
+Each conversation is saved with its full card thread. History restores past conversations exactly — cards, terminals, code — and reopening one is a real resume.
+
+## It's part of the desktop
+
+The presence applies generated wallpapers to macOS itself, hides during screen captures so screenshots show your apps, and reveals file paths in Finder when you click them. Generated apps open as native windows, and each presence keeps its own set — see [Multi-presence](/features/multi-presence).

@@ -1,0 +1,116 @@
+---
+title: "Tool Reference"
+description: "Every tool BOR can call, grouped by family. The authoritative source is server/protocol/registry.js; this page mirrors it."
+---
+
+Every tool BOR can call, grouped by family. The authoritative source is `server/protocol/registry.js`; this page mirrors it. Each tool is XML the model emits; the runtime parses, executes, and feeds the result back.
+
+> **Format.** Scalars ride as attributes (`<tag attr="…">`); long content rides in the body, usually wrapped in `<![CDATA[ … ]]>`. Some tools take typed children (e.g. `<create_app>`'s `<html>`, `<doc>`, `<thumbnail>`).
+
+---
+
+## Conversation & control
+
+### `say`
+Stream-only spoken text in the bubble. Never a tool result; it's BOR's voice. File paths inside it are wrapped in `<hyper_link_file>` and render as Reveal-in-Finder links.
+
+### `attempt_completion`
+Signals the turn is done; the `<result>` is shown to you.
+
+### `wait_for_human_input`
+The model needs something only you can give — a choice, OTP, MFA code, CAPTCHA, credential, permission, manual action, or confirmation. It states what it needs and ends the turn.
+
+### `reset_chat`
+Clear the current conversation.
+
+### `push_notification`
+Send an item to the notifications inbox behind the bell. See [Background tasks](/features/background-tasks).
+
+---
+
+## Surfaces — apps
+
+`create_app`, `update_app` (by id, doc read first), `launch_app`, `delete_app`. Apps open as native Mac windows; state persists across updates. See [Building apps](/features/building-apps).
+
+## Surfaces — shortcuts
+
+`create_shortcut`, `update_shortcut`, `launch_shortcut`, `delete_shortcut`. Live cards inside the bubble with the same capabilities as apps. (Legacy `*_widget` tags are hidden shims that redirect here.)
+
+## Design gate
+
+### `get_ux_ui_strict_guidelines`
+Returns the strict design contract for the active theme — required once before the first surface create/update in a turn. See [Themes](/features/themes).
+
+---
+
+## Themes & identity
+
+`set_theme` (theme + optional wallpaper + fonts), `reset_theme`, `set_ai_name`, `create_svg` (decorative vector art).
+
+## Surface data
+
+`list_surfaces`, `read_surface_data`, `mutate_surface_data` — list surfaces and read/patch a surface's persisted state.
+
+---
+
+## Files
+
+`read_file` (native extraction for PDF, docx, xlsx, pptx, ipynb, images incl. HEIC/PSD, audio/video metadata, archives, any text encoding — `device:/` maps to home, `bor:/` to BOR files), `read_file_in_chunks`, `read_batch`, `write_file` / `write_to_file`, `replace_in_file` (SEARCH/REPLACE patches), `delete_file`, `list_files`, `search_files` (regex), `list_code_definition_names`. See [Files](/features/files).
+
+## Commands
+
+`execute_command` (real bash; 60-second return window with background continuation; `background="true"` for servers), `wait_until` (pause 1–600s), `read_command_tail` (page output by `run_id`), `list_recent_commands`. See [Running commands](/features/running-commands).
+
+---
+
+## Memory & skills
+
+`remember` / `recall` / `forget` — durable facts about you. `use_skill` — load a skill playbook. See [Memory & skills](/features/memory-and-skills).
+
+## MCP
+
+`list_mcp_servers`, `list_mcp_tools`, `use_mcp_tool`, `access_mcp_resource`. See [MCP](/mcp/overview).
+
+---
+
+## The ambient browser
+
+The primary web surface — a real Chrome with its own profile, driven by accessibility snapshots with stable element refs. See [Ambient browser](/features/ambient-browser).
+
+| Tool | Does |
+|---|---|
+| `browser_open` | Open the browser at a URL (headed by default). |
+| `browser_snapshot` | Re-read the page structurally (every element gets a ref). |
+| `browser_click` / `browser_type` / `browser_press_key` / `browser_select` | Act on elements by ref. |
+| `browser_fill_form` | Fill multiple fields in one call. |
+| `browser_back` / `browser_tabs` / `browser_wait` | Navigate, manage tabs, wait for content. |
+| `browser_screenshot` | Viewport, full-page, or element screenshot. |
+| `browser_end` | Close the session. |
+
+### `browser_action`
+The older coordinate-based headless preview (launch / click / type / scroll / close, screenshot after every step). Still used for previewing locally built pages.
+
+---
+
+## Computer use
+
+`screen_capture` (presence hidden during capture), `locate_screen_element` (vision → click coordinates), `computer_click`, `computer_type`, `computer_key`, `open_app`, `computer_use` (a bounded see-find-act-verify loop). See [Computer use](/features/computer-use).
+
+---
+
+## Web, images & media
+
+`web_search`, `web_fetch`, `generate_image` (OpenAI `gpt-image-1` or Gemini Imagen; square/portrait/landscape), `view_image` (understand an external image URL), `display_media` (YouTube incl. Shorts/live, Vimeo, TikTok, Instagram posts/reels, direct images, .mp4), `display_tweet`. See [Media](/features/media) and [Ambient browser](/features/ambient-browser).
+
+---
+
+## Scheduling
+
+### `cron`
+Manage scheduled jobs: `status` / `list` / `get` / `add` / `update` / `remove` / `run`. Schedules: `at` (one-shot ISO time), `every` (interval), `cron` (expression + timezone). Payloads: `agentTurn` (a real agent run) or `systemEvent` (a reminder). See [Background tasks](/features/background-tasks).
+
+---
+
+## Adding your own
+
+Every tool is one registry entry + one handler. See [Adding a tool](/contributing/adding-a-tool).

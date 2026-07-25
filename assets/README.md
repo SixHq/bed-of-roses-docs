@@ -1,4 +1,7 @@
-# docs/assets
+---
+title: "docs/assets"
+description: "Drop the README hero media here."
+---
 
 Drop the README hero media here.
 

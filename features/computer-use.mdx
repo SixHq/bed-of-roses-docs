@@ -1,0 +1,40 @@
+---
+title: "Computer Use"
+description: "BOR can operate your actual Mac: see the screen, find UI elements, click, type, press keys, and open apps — for everything that isn't on the web and isn't in a file."
+---
+
+Bed of Roses can use your Mac the way you do: look at the screen, find the right button, click it, type, press shortcuts, and open applications. This is how it handles the things that aren't on the web and aren't in a file — "rename these layers in Figma", "send this in the Mail app", "click Run in Xcode".
+
+<img src="/assets/computer-use-screenshot.png" alt="BOR analyzing the screen: the thought bubble shows a Read-the-screen card containing the capture it just took of the page behind it, with the narration 'Taking a look at your screen now'" />
+
+## How it works
+
+1. **It looks.** BOR captures your screen — hiding its own orb and bubble first, so it sees your apps, not itself. The capture appears as a card in the bubble, so you always see what it saw.
+2. **It finds.** A vision model locates the element you described ("the blue Share button") and returns exact click coordinates.
+3. **It acts.** Clicks, typed text, and keyboard shortcuts are delivered to the real app. Opening applications works by name.
+4. **It verifies.** A click only proves a click was *sent* — so BOR re-captures the screen and confirms what actually changed before claiming success.
+
+For multi-step goals, BOR runs this see-find-act-verify loop on its own until the goal is met or it hits something only you can resolve (then it asks).
+
+## Permissions
+
+Computer use needs two macOS permissions, both requested during onboarding (and grantable later in System Settings → Privacy & Security):
+
+- **Screen Recording** — to see the screen.
+- **Accessibility** — to click and type.
+
+Vision-guided finding requires a vision-capable model on your configured provider.
+
+## When BOR uses it
+
+- **Native apps** — Figma, Xcode, Mail, Finder, anything that isn't a website.
+- **Last-resort web** — if a page defeats the [ambient browser](/features/ambient-browser), BOR can drive a visible browser by sight.
+
+For anything a [connector](/features/connectors) covers (Gmail, Calendar, Slack…), BOR uses the connector — it never clicks through a UI when a real API is available.
+
+## What to say
+
+- "In Figma, select the frame tool."
+- "Open Xcode and click Run."
+- "What's on my screen right now?"
+- "Fill in this form in the app I have open."

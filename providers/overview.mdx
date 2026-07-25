@@ -1,0 +1,35 @@
+---
+title: "Providers"
+description: "Bring your own model — Anthropic, OpenAI, Gemini, any OpenAI-compatible endpoint — or use Bed of Roses credits. Every provider is first-class."
+---
+
+BOR is **provider-agnostic**. You bring your own model — or use Bed of Roses credits — and BOR works the same either way: the tools, the apps it builds, the browser, memory, everything behaves identically regardless of which model is behind it.
+
+## The five providers
+
+| Provider | Bring | Notes |
+|---|---|---|
+| **[Bed of Roses credits](/providers/bed-of-roses-credits)** | Nothing | Metered credits, no API key. Claude, GPT, and DeepSeek models. |
+| **[Anthropic](/providers/anthropic)** | Anthropic API key | Claude models (Fable 5, Opus 4.8, Sonnet 5, …). |
+| **[OpenAI](/providers/openai)** | OpenAI API key | GPT models (5.6 Sol/Terra/Luna, 5.5, …). |
+| **[Google Gemini](/providers/gemini)** | Gemini API key | Gemini models (3.5 Flash, 3.1 Pro, 2.5 line). |
+| **[OpenAI-compatible](/providers/openai-compatible)** | Base URL + key | DeepSeek, Kimi, Z.ai, Groq, OpenRouter, Ollama, LM Studio, and any other OpenAI-shaped endpoint — with one-click presets. |
+
+You can connect several at once and switch between them from the [model chip](/features/presence#the-model-chip) in the input bar.
+
+## Reasoning effort
+
+Every provider has a **reasoning effort** setting — Off, Low, Medium, High (recommended), Max — controlling how much the model thinks before acting. The thinking streams into the bubble as reasoning cards. Set it per provider in onboarding or provider Settings; see [Configuration](/getting-started/configuration#models-and-reasoning-effort).
+
+## Vision and images
+
+- Screenshot-driven features ([computer use](/features/computer-use), browser screenshots, image attachments) need a **vision-capable** model — all current Anthropic/OpenAI/Gemini models qualify; local models vary.
+- **Image generation** is available with OpenAI (`gpt-image-1`) and Gemini (Imagen) keys. Anthropic doesn't offer one — pair keys if you want images alongside Claude.
+
+## Switching
+
+- Click the model chip and pick any connected provider/model — instant.
+- Ask BOR: "switch to Gemini."
+- With [multi-presence](/features/multi-presence), different presences can run different providers side by side.
+
+> Model ids rotate every few months. The in-app picker always reflects the live list; the ids named in these docs are a snapshot.

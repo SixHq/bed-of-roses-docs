@@ -1,0 +1,27 @@
+---
+title: "Anthropic"
+description: "Use Claude models in BOR with an Anthropic API key."
+---
+
+Use Claude models in BOR with an Anthropic API key.
+
+## Setup
+
+1. Get an API key from the Anthropic Console (linked from onboarding).
+2. In [onboarding](/getting-started/onboarding) (or the model picker's provider Settings), pick **Anthropic**, paste your key, choose a model and a reasoning effort.
+
+## Models
+
+The current list offered in BOR includes Claude Fable 5, Claude Opus 4.8 (recommended default), Claude Opus 4.7, Claude Sonnet 5, Claude Sonnet 4.6, and Claude Haiku 4.5. Model ids rotate on a months-long cadence — the picker always shows the live list.
+
+## Notes
+
+- Claude models are vision-capable, so screenshot-driven features ([computer use](/features/computer-use), browser screenshots, image attachments) work.
+- **No image generation** — Anthropic keys don't include an image model. Pair with an OpenAI or Gemini key if you want [generated images](/features/building-apps#svgs-and-images).
+- Reasoning effort (Off–Max) maps to Claude's extended thinking.
+
+## Troubleshooting
+
+- **401 / invalid key** — re-enter the key in provider settings.
+- **404 model** — the id retired; pick a current one from the picker.
+- See [Troubleshooting](/troubleshooting).

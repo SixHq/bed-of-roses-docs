@@ -1,0 +1,68 @@
+---
+title: "Development"
+description: "How BOR is built, the conventions to follow, and where things live. If you're extending BOR, start here."
+---
+
+How BOR is built, the conventions to follow, and where things live. If you're extending BOR, start here.
+
+## Setup
+
+```bash
+git clone https://github.com/SixHq/bed-of-roses
+cd bed-of-roses
+npm install
+npm run server:dev  # runtime on :7777 with --watch
+# or
+npm start      # the Electron host
+```
+
+There is **no build step, no test suite, and no lint config**. Node ≥ 20. The runtime is stdlib-only except for `electron`, `@modelcontextprotocol/sdk`, and `@playwright/mcp`.
+
+## The three trees
+
+- **`server/`** — the Node runtime (the brain). HTTP server, LLM harness, providers, the tool protocol, handlers, memory, cron.
+- **`shell/`** — the classic browser display (onboarding + dev), vanilla HTML/CSS/JS.
+- **`host/`** — the Electron Mac host (the product): presence window, native app windows, wallpaper.
+
+See [How it works: the runtime](/concepts/the-runtime) and the repo's `CLAUDE.md` for the code-level map.
+
+## Key files
+
+| File | What it is |
+|---|---|
+| `server/index.js` | HTTP server + routes. Keep the path-validation guards. |
+| `server/ai.js` | The LLM harness — system prompt, chat loop, streaming. |
+| `server/protocol/registry.js` | The single source of truth for the tool surface. |
+| `server/protocol/parser.js` | The streaming XML/CDATA parser. |
+| `server/protocol/executor.js` | Runs handlers, formats tool results. |
+| `server/protocol/handlers/*` | One module per tool family. |
+| `server/providers/*` | Provider adapters. |
+| `server/validator.js` | Safety checks for AI HTML + shell commands. |
+| `host/main.cjs` | Electron main process. |
+| `host/presence.{html,js,css}` | The presence UI. |
+
+## Conventions
+
+These are enforced across the codebase:
+
+- **Strict B&W default aesthetic.** No emojis, gradients, or color in core UI. Apple-grade. Named themes are the deliberate exceptions. Run the design process before any UI redesign.
+- **LLM model ids go stale.** Before editing `server/providers/*.js`, fetch the provider's live model docs — hardcoded ids rot in months.
+- **Avatar = the `MemojiRenderer` presence engine.** Extend `shell/memoji.js` (presets, colors); don't introduce external avatar libraries.
+- **Provider parity.** All providers are first-class; never "optimize for one, adapt the rest."
+- **The default file root** for AI-created files (no path given) is `.bor/`, not the project tree.
+- **Surfaces are sandboxed iframes.** All I/O goes through `parent.postMessage` → the bridge, validated server-side.
+- **Audit everything that mutates state.** Call `ctx.audit({ kind, … })` from handlers.
+
+## The LLM harness
+
+The harness is `server/ai.js` + `server/protocol/` (streaming XML-tool protocol). `server/protocol/registry.js` is the single source of truth for the tool surface — adding a tool there plus a handler module is all it takes.
+
+## Extending BOR
+
+- [Adding a tool](adding-a-tool.md)
+- [Adding a provider](adding-a-provider.md)
+- [Adding a theme](adding-a-theme.md)
+
+## Code style
+
+Match the surrounding code — its comment density, naming, and idioms. Reference code as `file_path:line`. The runtime is dependency-light by design; prefer the standard library.

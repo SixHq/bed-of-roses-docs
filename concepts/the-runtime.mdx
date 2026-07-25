@@ -1,0 +1,29 @@
+---
+title: "How It Works: The Runtime"
+description: "The local engine behind the presence — one Node process per presence that talks to your model, runs every tool, and records everything."
+---
+
+Behind every presence is a **runtime**: a single local Node process on your machine. It's the part that talks to your model provider, executes every tool, and stores everything. One runtime serves exactly one presence; run three presences and you have three isolated runtimes.
+
+## What it does
+
+1. **Talks to your model.** It builds the prompt (your personality settings, memory, connected tools), streams your request to the provider you configured, and reads the reply.
+2. **Executes tools.** When the model wants to write a file, run a command, browse, call Gmail, or build an app, the runtime does it — and streams the result both to your bubble (as a card) and back to the model, which keeps working until the task is done.
+3. **Stores everything locally.** Apps, files, memory, config, sessions — all on your disk. See [Storage & data](/concepts/storage-and-data).
+
+## The safety layer
+
+The runtime doesn't blindly trust generated output:
+
+- **Generated apps are sandboxed.** Apps and shortcut cards run in sandboxed frames with no direct disk, network, or key access; everything goes through validated calls to the runtime ([the bridge](/features/the-bridge)). A static validator additionally rejects HTML that tries to escape (eval, external scripts, storage access).
+- **Commands are screened.** Catastrophic shell patterns are refused before they run — see [Running commands](/features/running-commands#safety).
+- **Writes are fenced.** BOR can't overwrite its own source code or write outside your home folder.
+- **Everything is audited.** Every state-changing action — file writes, commands, theme changes, connector events — is appended to `os-data/logs/audit.jsonl`. It's your complete record of what BOR did.
+
+## Local first
+
+The runtime binds to `127.0.0.1` (port 7777 by default). Your API keys and connector tokens stay in local config; the only network traffic is to your chosen model provider and whatever services you've connected. The runtime can even tell "the model is slow" apart from "you're offline" and retries transient failures on its own.
+
+## For developers
+
+The runtime is a dependency-light Node server with no build step. If you want the code-level view — the tool registry, handlers, providers — start with [CONTRIBUTING](https://github.com/SixHq/bed-of-roses/blob/main/CONTRIBUTING.md) and the repo's `CLAUDE.md`, plus [Adding a tool](/contributing/adding-a-tool).

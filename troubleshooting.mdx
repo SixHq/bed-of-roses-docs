@@ -1,0 +1,91 @@
+---
+title: "Troubleshooting"
+description: "Common issues and how to resolve them."
+---
+
+## Setup & launch
+
+**The app won't start.**
+- Check Node ≥ 20 and that `npm install` completed (for source installs).
+- Port conflict: another process may hold `:7777`. Launch with `PORT=8080`.
+
+**Onboarding won't let me finish.**
+- The "Connect a model" step requires at least one working provider. Connecting services on the final "daily life" step is optional — you can skip all of it and link later.
+
+## Providers & models
+
+**"No AI provider is configured."**
+- Finish [onboarding](/getting-started/onboarding), or open the model chip → provider Settings and add a key.
+
+**401 / invalid key.**
+- Re-enter the key in the provider's settings. For OpenAI-compatible endpoints, also check the base URL.
+
+**404 model.**
+- The model id retired. Pick a current one from the model picker — ids rotate every few months.
+
+**Vision features don't work (element finding, screenshots the model reasons about).**
+- Your model must be vision-capable. Switch models from the chip.
+
+**Image generation fails on Anthropic.**
+- Anthropic keys don't include image generation. Add an OpenAI or Gemini key alongside; BOR uses it for images.
+
+## The browser
+
+**The ambient browser won't launch.**
+- BOR uses your installed Google Chrome, falling back to the bundled Chromium. If you have neither, run `npm run browser:install` once.
+
+**BOR isn't signed in to a site it needs.**
+- Use **Open sign-in browser** on the Web browsing card in the [connectors gallery](/features/connectors), log in there once, and the ambient browser's profile stays signed in.
+
+**Do I need the browser-use CLI?**
+- No. `browser-use` is an **optional fallback** — if it's installed on your PATH, BOR can use it to drive your real Chrome; if it isn't, the ambient browser handles everything. Nothing requires installing it.
+
+## Connectors
+
+**A service card says it needs Composio.**
+- One-click sign-ins go through Composio: create a free account at composio.dev, paste your project API key into the Composio card, and the Connect buttons light up.
+
+**Slack / Notion / GitHub without OAuth.**
+- Each accepts a manually created token as a fallback; BOR verifies it live before saving.
+
+**iMessage won't connect.**
+- It needs **Full Disk Access**: System Settings → Privacy & Security → Full Disk Access → enable Bed of Roses, then press Connect again.
+
+**BOR opens a browser for something I connected.**
+- It shouldn't — connected services are used directly. Check the connector still shows as connected; reconnect if the token expired.
+
+## Computer use
+
+**Screen capture is black / clicks do nothing.**
+- Grant **Screen Recording** and **Accessibility** to Bed of Roses in System Settings → Privacy & Security (the onboarding "Allow computer control" step can be re-done there any time).
+
+## Commands
+
+**A command seems stuck.**
+- It isn't blocking the chat — commands return within 60 seconds and keep running in the background while BOR follows their output. Dev servers are left running deliberately; ask BOR to stop one ("kill the dev server").
+
+## Apps & surfaces
+
+**A generated app looks broken.**
+- Ask BOR to fix it — "the stats page renders wrong, fix it." Updates preserve the app's data.
+
+**An app needs an API key and silently fails.**
+- BOR builds a settings screen inside apps that need keys. If one's missing, ask BOR to add the settings UI.
+
+## MCP
+
+**The marketplace is empty.**
+- The catalog is cached and served stale on errors, so this usually means the very first fetch failed. Check connectivity and refresh; override the source with `BOR_MCP_MARKETPLACE_URL` if you host your own.
+
+**An installed server isn't available.**
+- Check the presence's `.bor/mcp.json` for the entry and that it isn't `disabled`. Config changes hot-reload; if a hand-edit didn't take, restart the presence.
+
+## Data & resetting
+
+- **Fresh start:** remove `os-data/`, `.bor/`, `.bed-of-roses/`, `~/.bed-of-roses/`, and the BOR `.app` wrappers in `~/Applications`.
+- **One presence:** `bor delete <presence_id>` removes it and all its data.
+- See [Where your data lives](/concepts/storage-and-data).
+
+## Still stuck?
+
+Check the audit log at `os-data/.../logs/audit.jsonl` — it records every action BOR took, including errors and refusals.
